@@ -10,7 +10,7 @@ public interface BrokerInterface extends Remote {
 			String[] nombresParametros, String tipoRetorno) throws RemoteException;
 	public void bajaServicio(String servidor, String servicio) throws RemoteException;
 	//For clients
-	public Enumeration<Servicio> listaServicios() throws RemoteException;
+	public Servicios listaServicios() throws RemoteException;
 	public Respuesta ejecutarServicio(String servicio, String[]parametros) throws RemoteException;
 	
 	public void ejecutarServicioAsync(String servicio, String[]parametros) throws RemoteException;

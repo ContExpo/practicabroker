@@ -10,7 +10,7 @@ public class ServerA extends AbstractServer {
 	private static final String brokerHostname = "localhost"; //IP y puerto del broker, es publico y estatico
 	private static final int brokerPort = 1099;
     private static final String myHostname = "localhost"; //IP del host del registro RMI
-    private static final int myPort = 1099; //Puerto default de RMI
+    private static final int myPort = 1100; //Puerto default de RMI
 	
 	protected ServerA() throws RemoteException {
 		

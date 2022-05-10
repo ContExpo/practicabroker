@@ -38,13 +38,14 @@ implements BrokerInterface
 	}
 
 	@Override
-	public Enumeration<Servicio> listaServicios() {
-		return methods.elements();
+	public Servicios listaServicios() {
+		return new Servicios(methods);
 	}
 
 	@Override
 	public Respuesta ejecutarServicio(String servicio, String[]parametros) {
-		// TODO Auto-generated method stub
+		if(!methods.contains(servicio))
+			return null;
 		return null;
 	}
 
