@@ -1,3 +1,4 @@
+import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.rmi.server.*;
@@ -5,11 +6,13 @@ import java.util.*;
 
 public class Broker implements BrokerInterface {
 
-    private static String hostname;
+    private static String ipBroker;
+    private static String portBroker;
     ArrayList<Servidor> servidores = new ArrayList<Servidor>(); 
 
-    public Broker(String hostname_) {
-		this.hostname = hostname_;
+    public Broker(String ipBroker_, String portBroker_) {
+		this.ipBroker = ipBroker_;
+        this.portBroker = portBroker_;
     }
 
     public String ejecutar_servicio(String nom_servicio, String[] parametros_servicio) {
@@ -75,27 +78,24 @@ public class Broker implements BrokerInterface {
         return listado;
     }
 
-    public static void main (String [] args) {
+    public static void main (String [] args) throws MalformedURLException {
+
+        System.setProperty("java.security.policy", "../java.policy");
+
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
+
+        String[] hostname = args[0].split(":");
+
         try {
-			Broker bro = new Broker(args[0]);
-			System.setProperty("java.rmi.server.hostname", ip);
-		    //Se crea un stub y posteriormente se introduce al registro
-            BrokerInterface stub = (BrokerInterface) UnicastRemoteObject.exportObject(bro, 0);
-            Registry registry = null; 
-            //Intenta crear un nuevo registro o lo localiza si ya existe uno.      
-			try{
-				registry = LocateRegistry.createRegistry(port);
-			}
-			catch(RemoteException e){
-				registry = LocateRegistry.getRegistry(port); 
-			}
-			//Enlaza el stub en el registro.
-            registry.bind("BrokerInterface", stub);
-			System.err.println("Broker registrado");
+			Broker broker = new Broker(hostname[0], hostname[1]);
+            System.out.println("Creado!");
+
+            Naming.rebind("//" + ipBroker + ":" + portBroker + "/MyBrokerInterface", broker);
+            System.out.println("Estoy registrado!");
 
         } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (AlreadyBoundException e) {
             e.printStackTrace();
         }
     }

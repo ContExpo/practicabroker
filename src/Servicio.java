@@ -1,32 +1,32 @@
-import java.util.Array;
+import java.util.Arrays;
 
 public class Servicio {
 
-	private String nom_servicio;
-    private String tipo_retorno;
-    private String[] lista_param;
+	private String nombre;
+    private String type_return;
+    private String[] params;
 
-    public Servicio(String nombre, String retorno, String[] param) {
-        nom_servicio = nombre;
-        tipo_retorno = retorno;
-        lista_param = param;
+    public Servicio(String nombre_, String type_return_, String[] params_) {
+        nombre = nombre_;
+        type_return = type_return_;
+        params = params_;
     }
     
 	//Getters
     public String getNombre() {
-        return nom_servicio;
+        return nombre;
     }
 
     public String getTipoRetorno() {
-        return tipo_retorno;
+        return type_return;
     }
 
     public String[] getListaParam() {
-        return lista_param;
+        return lista_paramsparam;
     }
 
     public String toString() {
-        String parametros = Arrays.toString(lista_param);
-        return tipo_retorno + " " + nom_servicio + "(" + parametros + ")";
+        String parametros = Arrays.toString(params);
+        return type_return + " " + nombre + "(" + parametros + ")";
     }
 }

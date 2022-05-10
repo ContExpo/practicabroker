@@ -1,27 +1,19 @@
 import java.net.SocketPermission;
-import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.rmi.*;
+import java.rmi.registry.*;
+import java.util.*;
 
 public class ClienteC {
 
     private static String ipBroker;
+    private static String portBroker;
 
-    public ClienteC (String ipBroker_) {
+    public ClienteC (String ipBroker_, String portBroker_) {
         this.ipBroker = ipBroker_;
+        this.portBroker = portBroker_;
     }
 
-    private static int numServicios (BrokerInterface brokerInterface) {
-        ArrayList<String> lista_servicios = brokerInterface.listar_servicios();
-        return lista_servios.size();
-    }
-
-    private static void mostrarServicios (BrokerInterface brokerInterface) {
-        ArrayList<String> lista_servicios = brokerInterface.listar_servicios();
+    private static void mostrarServicios (ArrayList<String> lista_servicios) {
 
         System.out.println("Lista de servicios:)");
         System.out.println("0 -> salir del programa");
@@ -46,25 +38,25 @@ public class ClienteC {
             System.setSecurityManager(new SecurityManager());
         }
 
+        String[] hostname = args[0].split(":");
+
         try {
-            ClientC client = ClientC(args[0]);
+            ClienteC client = new ClienteC(hostname[0], hostname[1]);
 
             // Se coge el objeto remoto del broker
-            BrokerInterface brokerInterface = (BrokerInterface) Naming.lookup("//"+ hostname + "/MyBrokerInterface");
+            BrokerInterface brokerInterface = (BrokerInterface) Naming.lookup("//"+ ipBroker + ":" + portBroker + "/MyBrokerInterface");
+            ArrayList<String> lista_servicios = brokerInterface.listar_servicios();
 
-            mostrarServicios(brokerInterface);
+            mostrarServicios(lista_servicios);
             boolean fin = false;
             do {
                 int opcion = leerOpcion();
-                if (0 >= opcion || opcion > numServicios(brokerInterface)) {
+                if (0 >= opcion || opcion > lista_servicios.size()) {
                     fin = true;
                 } else {
-                    String servicioEscogido = lista_servicios.get(opcion - 1);
+                    String servicioEscogido = brokerInterface.listar_servicios().get(opcion - 1);
                     if (servicioEscogido.contains("insertar_libro")) {
                         System.out.println("Introduzca el parámetro: ");
-                        teclado.nextLine();
-                        String [] parametros = {teclado.nextLine()};
-						brokerInterface.ejecutar_servicio("insertar_libro",parametros);
                     } else {
                         int i = servicioEscogido.indexOf(" ");
                         int i2 = servicioEscogido.indexOf("(");
@@ -79,6 +71,8 @@ public class ClienteC {
             e.printStackTrace();
         } catch (NotBoundException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 }
