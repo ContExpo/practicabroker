@@ -15,35 +15,56 @@ public class ClienteC {
         this.ipBroker = ipBroker_;
     }
 
+    private static int numServicios (BrokerInterface brokerInterface) {
+        ArrayList<String> lista_servicios = brokerInterface.listar_servicios();
+        return lista_servios.size();
+    }
+
+    private static void mostrarServicios (BrokerInterface brokerInterface) {
+        ArrayList<String> lista_servicios = brokerInterface.listar_servicios();
+
+        System.out.println("Lista de servicios:)");
+        System.out.println("0 -> salir del programa");
+        int iter = 1;
+        for (String servicio : lista_servicios) {
+            System.out.println(iter + ". " + servicio);
+            iter++;
+        }
+    }
+
+    private static int leerOpcion() {
+        Scanner reader = new Scanner(System.in);
+        reader.close();
+        return reader.nextInt();
+    }
+
     public static void main(String[] args) {
+
+        System.setProperty("java.security.policy", "../java.policy");
+
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
+
         try {
+            ClientC client = ClientC(args[0]);
+
             // Se coge el objeto remoto del broker
-            Registry registry = LocateRegistry.getRegistry(ipBroker);
-            BrokerInterface brokerInterface = (BrokerInterface) registry.lookup("BrokerInterface");
-            ArrayList<String> lista_servicios = brokerInterface.listar_servicios();
-            int iterServ = 1;
-            System.out.println("Escoja un número del 1 al 5 para seleccionar una de estos " +
-                    "servicios:");
-            for (String servicio : lista_servicios) {
-                System.out.println(iterServ + ". " + servicio);
-                iterServ++;
-            }
-            System.out.println(iterServ + ". Finalizar programa");
-            Scanner teclado = new Scanner(System.in);
-            boolean parar = false;
-            while (!parar && teclado.hasNextInt()) {
-                int opcionEscogida = teclado.nextInt();
-                if (opcionEscogida == 5) {
-                    parar = true;
-                    teclado.close();
+            BrokerInterface brokerInterface = (BrokerInterface) Naming.lookup("//"+ hostname + "/MyBrokerInterface");
+
+            mostrarServicios(brokerInterface);
+            boolean fin = false;
+            do {
+                int opcion = leerOpcion();
+                if (0 >= opcion || opcion > numServicios(brokerInterface)) {
+                    fin = true;
                 } else {
-					String servicioEscogido = lista_servicios.get(opcionEscogida - 1);
+                    String servicioEscogido = lista_servicios.get(opcion - 1);
                     if (servicioEscogido.contains("insertar_libro")) {
                         System.out.println("Introduzca el parámetro: ");
                         teclado.nextLine();
                         String [] parametros = {teclado.nextLine()};
 						brokerInterface.ejecutar_servicio("insertar_libro",parametros);
-						
                     } else {
                         int i = servicioEscogido.indexOf(" ");
                         int i2 = servicioEscogido.indexOf("(");
@@ -53,7 +74,7 @@ public class ClienteC {
                         System.out.println(respuesta);
                     }
                 }
-            }
+            } while (!fin);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
