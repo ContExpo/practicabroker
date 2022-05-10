@@ -1,6 +1,5 @@
 package arqsoft;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -47,7 +46,7 @@ public abstract class AbstractServer extends UnicastRemoteObject implements Serv
 				return method.invoke(this, parametros).toString();
 			}
 		}
-		catch (IllegalAccessException e){
+		catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		catch (NoSuchMethodException e){
@@ -60,16 +59,4 @@ public abstract class AbstractServer extends UnicastRemoteObject implements Serv
 		return"";
 	}
 	
-	@Override
-	public String listaServicios() {
-		String toRet = "";
-		Method[] allMethods = this.getClass().getDeclaredMethods();
-		for (Method method : allMethods) {
-		    if (Modifier.isPublic(method.getModifiers())) {
-		    	if (!method.getName().equals("listaServicios"))
-		    		toRet += method.toString() + "\n";
-		    }
-		}
-		return toRet;
-	}
 }

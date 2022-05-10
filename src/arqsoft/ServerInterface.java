@@ -19,10 +19,4 @@ public interface ServerInterface extends Remote {
 	 * @throws RemoteException 
 	 */
 	public String ejecutaServicio(String servicio, String[] parametros) throws RemoteException;
-	/**
-	 * Devuelve una String para el usuario que lo informe de todos los servicios.
-	 * Nota: no todos los servicios estàn disponibles, ya què el servidor puede quitarlos del broker
-	 * @return la stringa
-	 */
-	public String listaServicios();
 }
