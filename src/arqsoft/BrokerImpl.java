@@ -55,14 +55,14 @@ implements BrokerInterface
 	public Respuesta obtenerRespuestaAsync(String servicio) {
 		return null;
 	}
-	
+
 	public static void main(String[] args) {
 		//Fijar el directorio donde se encuentra el java.policy
 		//El segundo argumento es la ruta al java.policy
 		System.setProperty("java.security.policy", "./java.policy");
 		//Crear administrador de seguridad
 		if (System.getSecurityManager() == null) {
-		    System.setSecurityManager(new SecurityManager());
+			System.setSecurityManager(new SecurityManager());
 		}
 		
 		try

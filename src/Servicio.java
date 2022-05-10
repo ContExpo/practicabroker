@@ -22,7 +22,7 @@ public class Servicio {
     }
 
     public String[] getListaParam() {
-        return lista_paramsparam;
+        return params;
     }
 
     public String toString() {

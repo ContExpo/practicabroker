@@ -1,4 +1,3 @@
-import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.rmi.server.*;
@@ -15,7 +14,35 @@ public class Broker implements BrokerInterface {
         this.portBroker = portBroker_;
     }
 
-    public String ejecutar_servicio(String nom_servicio, String[] parametros_servicio) {
+    public void altaServicio(String servidor, String servicio, String[] listaParametros, String tipoRetorno) {
+        for (Servidor srv : servidores) {
+            if (srv.getNombre().equals(servidor)) {
+                srv.addServicio(servicio, listaParametros, tipoRetorno);
+            }
+        }
+	}
+
+    public void bajaServicio(String servidor, String servicio) {
+		for (Servidor srv : servidores) {
+            if (srv.getNombre().equals(servidor)) {
+                srv.removeServicio(servicio);
+            }
+        }
+	}
+
+    public ArrayList<String> listarServicios() {
+        ArrayList<String> listado = new ArrayList<String>();
+        Iterator<Servidor> iterServer = servidores.iterator();
+        while (iterServer.hasNext()) {
+            Iterator<Servicio> iterServicio = iterServer.next().getServicios().iterator();
+            while (iterServicio.hasNext()) {
+                listado.add(iterServicio.next().toString());
+            }
+        }
+        return listado;	
+    }
+
+    public String ejecutarServicio(String nom_servicio, String[] parametros_servicio) {
         boolean encontrado = false;
         Iterator<Servidor> iterServidor = servidores.iterator();
         Servidor servidor = null;
@@ -52,39 +79,20 @@ public class Broker implements BrokerInterface {
         return "";
     }
 
-    public void registrar_servidor(String host_remoto_IP_port, String nombre_registrado) {
-        Servidor servidor = new Servidor(host_remoto_IP_port, nombre_registrado);
-        servidores.add(servidor);
-    }
+    public void ejecutarServicioAsync(String servicio, String[]parametros) {
+		
+	}
 
-    public void registrar_servicio(String nombre_regitrado, String nom_servicio, String[]
-            lista_param, String tipo_retorno) {
-        for (Servidor servidor : servidores) {
-            if (servidor.getNombre().equals(nombre_regitrado)) {
-                servidor.addServicio(nom_servicio, lista_param, tipo_retorno);
-            }
-        }
-    }
+	public String obtenerRespuestaAsync(String servicio) {
+		return null;
+	}
 
-    public ArrayList<String> listar_servicios() {
-        ArrayList<String> listado = new ArrayList<String>();
-        Iterator<Servidor> iterServer = servidores.iterator();
-        while (iterServer.hasNext()) {
-            Iterator<Servicio> iterServicio = iterServer.next().getServicios().iterator();
-            while (iterServicio.hasNext()) {
-                listado.add(iterServicio.next().toString());
-            }
-        }
-        return listado;
-    }
-
-    public static void main (String [] args) throws MalformedURLException {
+    public static void main (String [] args) {
 
         System.setProperty("java.security.policy", "../java.policy");
-
         if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+			System.setSecurityManager(new SecurityManager());
+		}
 
         String[] hostname = args[0].split(":");
 
@@ -97,6 +105,8 @@ public class Broker implements BrokerInterface {
 
         } catch (RemoteException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 }

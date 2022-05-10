@@ -42,4 +42,8 @@ public class Servidor {
     public void addServicio(String nombre, String[] param, String retorno) {
         listaServicios.add(new Servicio(nombre, retorno, param));
     }
+
+    public void removeServicio(String nombre) {
+        listaServicios.remove(listaServicios.indexOf(nombre));
+    }
 }

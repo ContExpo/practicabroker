@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 public interface BrokerInterface extends Remote {
-	String ejecutar_servicio(String nom_servicio, String[] parametros_servicio) throws RemoteException;
-	void registrar_servidor(String host_remoto_IP_port, String nombre_registrado) throws RemoteException;
-	void registrar_servicio(String nombre_regitrado, String nom_servicio, String[] lista_param,
-							String tipo_retorno) throws RemoteException;
-	ArrayList<String> listar_servicios() throws RemoteException;
+	//For servers
+	public void altaServicio(String servidor, String servicio,  String[] listaParametros, String tipoRetorno) throws RemoteException;
+	public void bajaServicio(String servidor, String servicio) throws RemoteException;
+
+	//For clients
+	public ArrayList<String> listarServicios() throws RemoteException;
+	public String ejecutarServicio(String servicio, String[]parametros) throws RemoteException;
+	
+	public void ejecutarServicioAsync(String servicio, String[]parametros) throws RemoteException;
+	public String obtenerRespuestaAsync(String servicio) throws RemoteException;
 }
