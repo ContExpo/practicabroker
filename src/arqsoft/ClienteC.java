@@ -44,7 +44,7 @@ public class ClienteC {
                 String[] pars = new String[servicio.tiposParametros.length];
                 for (int i = 0; i < servicio.tiposParametros.length; i++)
                 {
-                	System.out.println("Inserta " + servicio.tiposParametros[i] + " " + servicio.nombresParametros + ": ");
+                	System.out.println("Inserta " + servicio.tiposParametros[i] + " " + servicio.nombresParametros[i] + ": ");
                 	pars[i] = reader.nextLine();
                 }
                 Respuesta respuesta = brokerInterface.ejecutarServicio(opcion, pars);

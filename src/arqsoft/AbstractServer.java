@@ -3,6 +3,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Vector;
 
 public abstract class AbstractServer extends UnicastRemoteObject implements ServerInterface{
 	
@@ -35,11 +36,12 @@ public abstract class AbstractServer extends UnicastRemoteObject implements Serv
 		try
 		{
 			//We get the method
-			Method method = c.getMethod(servicio);
-			//Si no hace falta devolver nada
+			Class[] classArr = this.generateClassArray(parametros);
+			Method method = c.getMethod(servicio, classArr);
+			Object[] passablePars = this.generateParams(parametros, classArr);
 			if (method.getReturnType() == void.class) {
 				//Parametros would need a Object[] cast, but who cares?
-				method.invoke(this, parametros);
+				method.invoke(this, passablePars);
 				return "";
 			}
 			else {
@@ -57,6 +59,33 @@ public abstract class AbstractServer extends UnicastRemoteObject implements Serv
 			e.printStackTrace();
 		}
 		return"";
+	}
+
+	private Object[] generateParams(String[] parametros, Class[] classArr) {
+		Object[] toRet = new Object[parametros.length];
+		for (int i = 0; i<parametros.length; i++)
+		{
+			if (classArr[i] == String.class) {
+				toRet[i] = parametros[i];
+			}
+			else 
+				toRet[i] = new Integer(parametros[i]);
+		}
+		return toRet;
+	}
+
+	private Class[] generateClassArray(String[] parametros) {
+		Class[] toRet = new Class[parametros.length];
+		for (int i = 0; i<parametros.length; i++)
+		{
+			try {
+				Integer.parseInt(parametros[i]);
+				toRet[i] = Integer.class;
+			} catch (NumberFormatException e) {
+				toRet[i] = java.lang.String.class;
+			}
+		}
+		return toRet;
 	}
 	
 }

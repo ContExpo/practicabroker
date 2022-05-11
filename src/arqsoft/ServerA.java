@@ -36,7 +36,7 @@ public class ServerA extends AbstractServer {
 		return 0;
 	}
 
-	public int getDouble(int number) throws RemoteException {
+	public int getDouble(Integer number) throws RemoteException {
 		return number*2;
 	}
 	

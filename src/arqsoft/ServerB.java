@@ -10,8 +10,8 @@ public class ServerB extends AbstractServer {
 	private static final String brokerHostname = "localhost"; //IP y puerto del broker, es publico y estatico
 	private static final int brokerPort = 1099;
     private static final String myHostname = "localhost";
-    private static final int myPort = 1100;
-    private static final String myIdentifier = myHostname + ":" + myPort + "/" + "ServerA847";
+    private static final int myPort = 1101;
+    private static final String myIdentifier = myHostname + ":" + myPort + "/" + "ServerB847";
 	
 	protected ServerB() throws RemoteException {
 		
@@ -26,7 +26,7 @@ public class ServerB extends AbstractServer {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("***Server A***");
+		System.out.println("***Server B***");
 		//Fijar el directorio donde se encuentra el java.policy
 		//El segundo argumento es la ruta al java.policy
 		System.setProperty("java.security.policy", "./java.policy");
@@ -51,7 +51,7 @@ public class ServerB extends AbstractServer {
 		{
 			// Crear objeto remoto
 			ServerB obj = new ServerB();
-			System.out.println("Creado server A!");
+			System.out.println("Creado server B!");
 			//Registrar el objeto remoto
 			Naming.rebind("//" + myIdentifier, obj);
 			System.out.println("Estoy registrado en //" + myIdentifier + "!");
@@ -69,8 +69,10 @@ public class ServerB extends AbstractServer {
 			//**Registrando mis metodos**
 			//Cuidado: el servidor tiene que registrarse para cada metodo como
 			//IP:puerto:collectionName
-			broker.altaServicio(myIdentifier, "getRandomNumber", new String[0], new String[0], "int");
-			broker.altaServicio(myIdentifier, "getRandomLetter", new String[0], new String[0], "char");
+			String[] parTypes= {"String"};
+			String[] parNames = {"text"};
+			broker.altaServicio(myIdentifier, "getRandomLetter", new String[0], new String[0], "int");
+			broker.altaServicio(myIdentifier, "toUpperCase", parTypes, parNames, "String");
 		}
 		catch (Exception ex)
 		{
