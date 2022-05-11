@@ -1,12 +1,17 @@
 package arqsoft;
 
-import java.util.Hashtable;
+import java.io.Serializable;
+import java.util.HashMap;
 
-public class Servicios {
+public class Servicios implements Serializable {
 
-	public Hashtable<String, Servicio> methods;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 12452234540915932L;
+	public HashMap<String, Servicio> methods;
 	
-	public Servicios(Hashtable<String, Servicio> methods) {
+	public Servicios(HashMap<String, Servicio> methods) {
 		this.methods = methods;
 	}
 

@@ -16,16 +16,16 @@ public abstract class AbstractServer extends UnicastRemoteObject implements Serv
 	}
 
 	/**
-	 * Método que, dado el nombre de otro método, sus parámetros
-	 * y su tipo de retorno, busca ese método empleando la 
+	 * Metodo que, dado el nombre de otro metodo, sus parametros
+	 * y su tipo de retorno, busca ese metodo empleando la 
 	 * reflexividad de Java sobre la propia clase y lo ejecuta, 
 	 * devolviendo el resultado en un String.
-	 * @param servicio - Nombre del método a ejecutar
-	 * @param tipoParametros - Array con los tipos de los parámetros del 
-	 * método a ejecutar
-	 * @param retorno - Tipo del parámetro de retorno del método a ejecutar
-	 * @param parametros - Array con los parámetros del método a ejecutar
-	 * @return Un String con la respuesta del método ejecutado.
+	 * @param servicio - Nombre del metodo a ejecutar
+	 * @param tipoParametros - Array con los tipos de los paremetros del 
+	 * metodo a ejecutar
+	 * @param retorno - Tipo del parametro de retorno del metodo a ejecutar
+	 * @param parametros - Array con los parametros del metodo a ejecutar
+	 * @return Un String con la respuesta del metodo ejecutado.
 	 */
 	public String ejecutaServicio(String servicio, String[] parametros) 
 			throws RemoteException 
