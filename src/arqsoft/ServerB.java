@@ -1,4 +1,3 @@
-package arqsoft;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -60,7 +59,7 @@ public class ServerB extends AbstractServer {
 			Naming.rebind("//" + myIdentifier, obj);
 			System.out.println("Estoy registrado en //" + myIdentifier + "!");
 			
-			//Aquí llamamos el broker para registrar servicios
+			//Aquï¿½ llamamos el broker para registrar servicios
 			
 			BrokerInterface broker =
 					(BrokerInterface) Naming.lookup("//"+ brokerHostname + ":" + brokerPort + "/Broker847");

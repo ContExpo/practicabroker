@@ -1,5 +1,3 @@
-package arqsoft;
-
 import java.rmi.*;
 import java.util.*;
 
