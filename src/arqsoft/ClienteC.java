@@ -5,8 +5,8 @@ import java.util.*;
 
 public class ClienteC {
 
-    private static String ipBroker;
-    private static String portBroker;
+	private static int brokerPort = 1099;
+    private static String brokerHostname = "localhost";
 
     private static void mostrarServicios (Servicios lista_servicios) {
     	System.out.println("****************************************************");
@@ -18,11 +18,13 @@ public class ClienteC {
     }
 
     public static void main(String[] args) {
-
+    	if (args.length == 2) {
+			brokerHostname = args[1];
+			brokerPort = Integer.parseInt(args[2]);
+		}
+    	
     	Scanner reader = new Scanner(System.in);
     	System.out.println("**CLIENTE**");
-    	ipBroker = "localhost";
-    	portBroker = "1099";
         System.setProperty("java.security.policy", "./java.policy");
 
         if (System.getSecurityManager() == null) {
@@ -34,7 +36,7 @@ public class ClienteC {
 
             // Se coge el objeto remoto del broker
             BrokerInterface brokerInterface = (BrokerInterface) 
-            		Naming.lookup("//"+ ipBroker + ":" + portBroker + "/Broker847");
+            		Naming.lookup("//"+ brokerHostname + ":" + brokerPort + "/Broker847");
             do {
             	Servicios lista_servicios = brokerInterface.listarServicios();
                 mostrarServicios(lista_servicios);

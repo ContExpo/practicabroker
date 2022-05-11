@@ -9,8 +9,8 @@ import java.rmi.server.ExportException;
 //TODO: imports necesarios
 public class ServerA extends AbstractServer {
 	private static final long serialVersionUID = 1L;
-	private static final String brokerHostname = "localhost"; //IP y puerto del broker, es publico y estatico
-	private static final int brokerPort = 1099;
+	private static String brokerHostname = "localhost"; //IP y puerto del broker, es publico y estatico
+	private static int brokerPort = 1099;
     private static final String myHostname = "localhost";
     private static final int myPort = 1100;
     private static final String myIdentifier = myHostname + ":" + myPort + "/" + "ServerA847";
@@ -41,6 +41,10 @@ public class ServerA extends AbstractServer {
 	}
 	
 	public static void main(String[] args) {
+		if (args.length == 2) {
+			brokerHostname = args[1];
+			brokerPort = Integer.parseInt(args[2]);
+		}
 		System.out.println("***Server A***");
 		//Fijar el directorio donde se encuentra el java.policy
 		//El segundo argumento es la ruta al java.policy
